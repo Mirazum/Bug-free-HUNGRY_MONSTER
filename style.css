@@ -58,3 +58,12 @@ h2  {
 .main {
     display: none;
   }
+
+  /* .background-image {
+    background-image: url('image/food.jpg');
+    width:10px;
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: auto;
+    height: 10px;
+} */

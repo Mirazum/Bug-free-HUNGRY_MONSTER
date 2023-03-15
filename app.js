@@ -1,46 +1,47 @@
 const search = document.getElementById('mealInput');
 const errorMessage = document.getElementById('errorMessage')
-const searchBtn = document.getElementById('searchButton');
 const mealContainer = document.getElementById('mealCard');
 //------------- handle search button-----------
-const searchFood = () => {
+
+const loadFood = (searchData) => {
     document.getElementById("mealCard").style.display = "grid";
      document.getElementById("mealItemsInfo").style.display = "none"
-    const searchField = document.getElementById('mealInput'); 
-    
-    const searchData = searchField.value  
-    if (!searchData) {
-        // alert('Item can not be empty')
-       
-        errorMessage.innerHTML='please write something'
-       
+  if (!searchData) {
+         errorMessage.innerHTML='please write something'
+        document.getElementById("mealCard").style.display = "none";
     } else{
         errorMessage.innerHTML ="";
         const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchData}`;
     fetch(url)
     .then(res => res.json())
-    // .then(data => console.log(data))
-    .then(data => displayMealInfo(data.meals))
+    //   .then(data => console.log(data.meals))
+     .then(data => displayMealInfo (data.meals,searchData))
     .catch((error) => {
-        errorMessage.innerHTML="Your Search Result didn't match !!!";
-        // errorMessage.innerHTML ="";
+        errorMessage.innerHTML="Your Search Result didn't match !!!";   
       }); 
     }  
-    searchField.value="";
-}
+    document.getElementById('mealInput').value="";
+   }
+
+            
+
 
 const displayMealInfo = mealData => {
     const mealContainer = document.getElementById('mealCard');
     document.getElementById('mealCard').innerText="";
-    // console.log(mealData)
-    mealData.forEach(item => {
+     console.log(mealData)
+     
+    mealData.forEach(item =>{
+        // console.log(item)
         const foodItemName = document.createElement('div');
         foodItemName.className = 'meal-items';
         itemPosition = item.idMeal;
+        // console.log(itemPosition)
         const mealInformation = `
         <img src ="${item.strMealThumb}">
         <h3>${item.strMeal}</h3>
         `
+        console.log(item.strMeal)
         foodItemName.innerHTML = mealInformation;
         foodItemName.addEventListener('click', function () {
             mealIngredientsInfo(item.idMeal);
@@ -49,7 +50,21 @@ const displayMealInfo = mealData => {
     });
     
 }
+const processSearch = () => {
 
+    const searchField = document.getElementById('mealInput').value;
+    loadFood(searchField);
+}
+
+// handel search button click
+// document.getElementById('searchButton').addEventListener('click', function () {
+
+//     processSearch();
+// })
+// Another way to handel search button
+function searchFood(){
+    processSearch();
+}
 
 //API Call by fetch for meal ingredients 
 
@@ -125,4 +140,11 @@ const displayDetails = mealItemDetails => {
   
     // document.getElementById("mealCard").style.display = "none";
     document.getElementById("mealItemsInfo").style.display = "block"
-}
+
+ }
+//  when loading the page it will show the beef items
+//  window.onload = function() {
+//     loadFood ('beef');
+//   }
+
+   
